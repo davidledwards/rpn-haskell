@@ -23,13 +23,14 @@ formatAST ast =
     format :: AST -> Int -> String
     format ast depth =
       replicate (depth * 2) ' ' ++
-        case ast of SymbolAST name -> "Symbol(" ++ name ++ ")\n"
-                    NumberAST value -> "Number(" ++ show value ++ ")\n"
-                    AddAST l r -> "Add\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
-                    SubtractAST l r -> "Subtract\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
-                    MultiplyAST l r -> "Multiply\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
-                    DivideAST l r -> "Divide\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
-                    ModuloAST l r -> "Modulo\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
-                    PowerAST base exp -> "Power\n" ++ (format base $ depth + 1) ++ (format exp $ depth + 1)
-                    MinAST l r -> "Min\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
-                    MaxAST l r -> "Max\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
+        case ast of
+          SymbolAST name -> "Symbol(" ++ name ++ ")\n"
+          NumberAST value -> "Number(" ++ show value ++ ")\n"
+          AddAST l r -> "Add\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
+          SubtractAST l r -> "Subtract\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
+          MultiplyAST l r -> "Multiply\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
+          DivideAST l r -> "Divide\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
+          ModuloAST l r -> "Modulo\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
+          PowerAST base exp -> "Power\n" ++ (format base $ depth + 1) ++ (format exp $ depth + 1)
+          MinAST l r -> "Min\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
+          MaxAST l r -> "Max\n" ++ (format l $ depth + 1) ++ (format r $ depth + 1)
