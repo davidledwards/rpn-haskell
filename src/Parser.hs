@@ -63,14 +63,17 @@ p0 inp =
 --
 p1 :: AST -> [Token] -> (AST, [Token])
 p1 l inp =
-    case inp of
-      (PlusToken : rest) ->
-        let (r, _rest) = p2 rest
-        in p1 (AddAST l r) _rest
-      (MinusToken : rest) ->
-        let (r, _rest) = p2 rest
-        in p1 (SubtractAST l r) _rest
-      _ -> (l, inp)
+    let
+      ctor = case inp of
+               (PlusToken : _) -> Just AddAST
+               (MinusToken : _) -> Just SubtractAST
+               _ -> Nothing
+    in
+      case ctor of
+        Just _ctor ->
+          let (r, _rest) = p2 $ tail inp
+          in p1 (_ctor l r) _rest
+        Nothing -> (l, inp)
 
 --
 -- p2 ::= <p4> <p3>
@@ -89,20 +92,19 @@ p2 inp =
 --
 p3 :: AST -> [Token] -> (AST, [Token])
 p3 l inp =
-    case inp of
-      (StarToken : rest) ->
-        let (r, _rest) = p4 rest
-        in p3 (MultiplyAST l r) _rest
-      (SlashToken : rest) ->
-        let (r, _rest) = p4 rest
-        in p3 (DivideAST l r) _rest
-      (PercentToken : rest) ->
-        let (r, _rest) = p4 rest
-        in p3 (ModuloAST l r) _rest
-      (CaretToken : rest) ->
-        let (r, _rest) = p4 rest
-        in p3 (PowerAST l r) _rest
-      _ -> (l, inp)
+    let
+      ctor = case inp of
+               (StarToken : _) -> Just MultiplyAST
+               (SlashToken : _) -> Just DivideAST
+               (PercentToken : _) -> Just ModuloAST
+               (CaretToken : _) -> Just PowerAST
+               _ -> Nothing
+    in
+      case ctor of
+        Just _ctor ->
+          let (r, _rest) = p4 $ tail inp
+          in p3 (_ctor l r) _rest
+        Nothing -> (l, inp)
 
 --
 -- p4 ::= <p6> <p5>
@@ -119,14 +121,17 @@ p4 inp =
 --
 p5 :: AST -> [Token] -> (AST, [Token])
 p5 l inp =
-    case inp of
-      (MinToken : rest) ->
-        let (r, _rest) = p6 rest
-        in p5 (MinAST l r) _rest
-      (MaxToken : rest) ->
-        let (r, _rest) = p6 rest
-        in p5 (MaxAST l r) _rest
-      _ -> (l, inp)
+    let
+      ctor = case inp of
+               (MinToken : _) -> Just MinAST
+               (MaxToken : _) -> Just MaxAST
+               _ -> Nothing
+    in
+      case ctor of
+        Just _ctor ->
+          let (r, _rest) = p6 $ tail inp
+          in p5 (_ctor l r) _rest
+        Nothing -> (l, inp)
 
 --
 -- p6 ::= '(' <p0> ')'
