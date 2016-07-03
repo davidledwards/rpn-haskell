@@ -20,9 +20,6 @@ module Token (
   asToken
 ) where
 
-class Tokenized t where
-  lexeme :: t -> String
-
 data Token =
     PlusToken
   | MinusToken
@@ -39,20 +36,20 @@ data Token =
   | EOSToken
   deriving (Eq, Show)
 
-instance Tokenized Token where
-  lexeme PlusToken = "+"
-  lexeme MinusToken = "-"
-  lexeme StarToken = "*"
-  lexeme SlashToken = "/"
-  lexeme PercentToken = "%"
-  lexeme CaretToken = "^"
-  lexeme LeftParenToken = "("
-  lexeme RightParenToken = ")"
-  lexeme MinToken = "min"
-  lexeme MaxToken = "max"
-  lexeme EOSToken = "<EOS>"
-  lexeme (SymbolToken lex) = lex
-  lexeme (NumberToken lex) = lex
+lexeme :: Token -> String
+lexeme PlusToken = "+"
+lexeme MinusToken = "-"
+lexeme StarToken = "*"
+lexeme SlashToken = "/"
+lexeme PercentToken = "%"
+lexeme CaretToken = "^"
+lexeme LeftParenToken = "("
+lexeme RightParenToken = ")"
+lexeme MinToken = "min"
+lexeme MaxToken = "max"
+lexeme EOSToken = "<EOS>"
+lexeme (SymbolToken lex) = lex
+lexeme (NumberToken lex) = lex
 
 charIsToken :: Char -> Bool
 charIsToken c = elem c ['+', '-', '*', '/', '%', '^', '(', ')']
